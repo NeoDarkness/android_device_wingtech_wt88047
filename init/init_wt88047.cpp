@@ -215,7 +215,7 @@ void init_target_properties()
         return;
 
     import_kernel_cmdline(0, import_kernel_nv);
-    property_set("ro.product.board", board_id);
+    // property_set("ro.product.board", board_id);
     ERROR("Detected board ID=%s\n", board_id);
 
     if (strcmp(board_id, "S88047E1") == 0) {
