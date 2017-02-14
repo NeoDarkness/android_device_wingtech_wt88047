@@ -31,17 +31,16 @@
    IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <cstdlib>
 #include <fstream>
-#include <string>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #include <sys/sysinfo.h>
 
 #include "vendor_init.h"
 #include "property_service.h"
 #include "log.h"
 #include "util.h"
-
-#include "init_msm8916.h"
 
 int is2GB()
 {
@@ -50,7 +49,7 @@ int is2GB()
     return sys.totalram > 1024ull * 1024 * 1024;
 }
 
-void init_target_properties()
+void check_device()
 {
     std::ifstream fin;
     std::string buf;
@@ -146,4 +145,41 @@ void init_target_properties()
     /* Unified description and fingerprint for now */
     property_set("ro.build.description", "wt88047-user 5.1.1 LMY47V 6.1.28 release-keys");
     property_set("ro.build.fingerprint", "Xiaomi/wt88047/wt88047:5.1.1/LMY47V/6.1.28:user/release-keys");
+}
+
+static void init_alarm_boot_properties()
+{
+    int boot_reason;
+    FILE *fp;
+
+    fp = fopen("/proc/sys/kernel/boot_reason", "r");
+    fscanf(fp, "%d", &boot_reason);
+    fclose(fp);
+
+    /*
+     * Setup ro.alarm_boot value to true when it is RTC triggered boot up
+     * For existing PMIC chips, the following mapping applies
+     * for the value of boot_reason:
+     *
+     * 0 -> unknown
+     * 1 -> hard reset
+     * 2 -> sudden momentary power loss (SMPL)
+     * 3 -> real time clock (RTC)
+     * 4 -> DC charger inserted
+     * 5 -> USB charger inserted
+     * 6 -> PON1 pin toggled (for secondary PMICs)
+     * 7 -> CBLPWR_N pin toggled (for external power supply)
+     * 8 -> KPDPWR_N pin toggled (power key pressed)
+     */
+     if (boot_reason == 3) {
+        property_set("ro.alarm_boot", "true");
+     } else {
+        property_set("ro.alarm_boot", "false");
+     }
+}
+
+void vendor_load_properties()
+{
+    check_device();
+    init_alarm_boot_properties();
 }

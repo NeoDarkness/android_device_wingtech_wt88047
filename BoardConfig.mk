@@ -15,8 +15,6 @@
 
 FORCE_32_BIT := true
 
-include device/cyanogen/msm8916-common/BoardConfigCommon.mk
-
 include device/wingtech/wt88047/board/*.mk
 
 # inherit from the proprietary version

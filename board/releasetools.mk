@@ -1,0 +1,1 @@
+TARGET_RELEASETOOLS_EXTENSIONS := device/wingtech/wt88047
