@@ -5,4 +5,5 @@ PRODUCT_PROPERTY_OVERRIDES += \
     rild.libpath=/system/vendor/lib/libril-qc-qmi-1.so \
     ril.ecclist=000,08,100,101,102,110,112,118,119,120,122,911,999 \
     ril.ecclist1=000,08,100,101,102,110,112,118,119,120,122,911,999 \
-    ril.subscription.types=RUIM
+    ril.subscription.types=RUIM \
+    ro.config.always_show_roaming=true
