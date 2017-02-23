@@ -15,14 +15,17 @@
 
 $(call inherit-product, device/wingtech/wt88047/full_wt88047.mk)
 
-# Inherit some common Lineage stuff.
-$(call inherit-product, vendor/cm/config/common_full_phone.mk)
+# Inherit some common CM stuff.
+$(call inherit-product, vendor/aosp/common.mk)
 
 # Must define platform variant before including any common things
 TARGET_BOARD_PLATFORM_VARIANT := msm8916
 
-PRODUCT_NAME := lineage_wt88047
+PRODUCT_NAME := aosp_wt88047
 BOARD_VENDOR := wingtech
 PRODUCT_DEVICE := wt88047
 
 PRODUCT_GMS_CLIENTID_BASE := android-xiaomi
+
+# Build Magisk
+DEFAULT_ROOT_METHOD := magisk
